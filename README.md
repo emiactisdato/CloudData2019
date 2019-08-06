@@ -34,55 +34,55 @@ Estas instrucciones describen cómo construir la web app de ejemplo con las imá
 
 <ol>
 <li><p>Crear una cuenta gratuita (Lite) en IBM Cloud (si ya tenés una cuenta creada, podés usar esa): <a href="https://www.ibm.com/cloud/">IBM Cloud sign up</a></p></li>
-<li><p>Craear una instancia del servicio IBM Watson Studio en IBM Cloud: <a href="https://cloud.ibm.com/catalog/services/watson-studio">IBM Watson Studio</a></p></li>
+<li><p>Crear una instancia del servicio IBM Watson Studio en IBM Cloud: <a href="https://cloud.ibm.com/catalog/services/watson-studio">IBM Watson Studio</a></p></li>
 <li><p>Crear un proyecto en Watson Studio:</p>
     <ol>
     <li>Ir a https://dataplatform.cloud.ibm.com y hacer log in (si es que ya no lo habías hecho antes)</li>
     <li>Hacer click en <b>New project</b>, seleccionar <b>Visual Recognition</b>, y luego seguir los pasos para asociar los servicios necesarios para el proyecto: IBM Cloud Object Storage e IBM Watson Visual Recognition.</li>
     </ol>
     <p>See also: <a href="https://dataplatform.cloud.ibm.com/docs/content/getting-started/projects.html">Creating projects</a></li>
-<li><p>To be able to run the sample web app on your local computer, <a href="https://www.python.org">install Python</a></p>
+<li><p>Para poder ejecutar la web app de ejemplo en tu computadora, <a href="https://www.python.org">instalá Python</a></p>
     <ul>
-    <li>Make sure to have the installer add Python to your environments variables</li>
-    <li>Mac users, also install <code>pip</code> by issuing this command: <pre><code>sudo easy_install pip</code></pre></li>
-    <li>Mac users, also add your user base binary directory to your path:
+    <li>Asegurate que el instalador agregue Python a tus variables de entorno</li>
+    <li>Para usuarios Mac, también instalar <code>pip</code> mediante este comando: <pre><code>sudo easy_install pip</code></pre></li>
+    <li>Para usuarios Mac, también agregar la carpeta user base binary a tu path:
         <ol>
-        <li>Find the user base binary directory by running this command: <pre><code>python -m site --user-base</code></pre></li>
-        <li>Add your user base binary directory, with <code>/bin</code> appended, to the file <code>/etc/paths</code></li>
+        <li>Encontrá la carpeta user base binary con este comando: <pre><code>python -m site --user-base</code></pre></li>
+        <li>Agregá la carpeta sumándole <code>/bin</code> atrás, en el file <code>/etc/paths</code></li>
         </ol>
-        <p>See: <a href="https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion">Complete instructions</a></p></li>
+        <p>Revisá: <a href="https://www.architectryan.com/2012/10/02/add-to-the-path-on-mac-os-x-mountain-lion">Instrucciones detalladas</a></p></li>
     </ul></li>
-<li>To be able to push the sample web app to IBM Cloud, <a href="https://console.bluemix.net/docs/cli/reference/ibmcloud/download_cli.html#install_use">install the IBM Cloud CLI</a></li>
+<li>Para poder enviar la web app de ejemplo a IBM Cloud, <a href="https://console.bluemix.net/docs/cli/reference/ibmcloud/download_cli.html#install_use">instalá el IBM Cloud CLI</a></li>
 </ol>
 
 <p>&nbsp;</p>
 
 
-### Step 1: Collect training and test data
+### Paso 1: Colectar datos de entrenamiento y de prueba
 
-1. <p>Download these five .zip files to your local computer: <a href="sar-model/training_data">Training data</a></p>
-2. <p>Download these four images to your local computer: <a href="sar-model/test_images">Test images</a></p>
+1. <p>Desgargá estos cinco archivos .zip a tu computadora: <a href="sar-model/training_data">Datos de entrenamiento</a></p>
+2. <p>Descargá estas cuatro imágenes a tu computadora: <a href="sar-model/test_images">Imágenes de prueba</a></p>
 
-#### About the sample training data and test images
+#### Sobre las imágenes de entrenamiento
 
-The sample training data includes 20 images of four different objects:
+Las imágenes de entrenamiento incluyen 20 fotos de cuatro objetos diferentes:
 
 <table>
 <tr>
-  <td><b>Blocks</b><br/><img src="readme-images/blocks_037.jpg" width="100"/></td>
-  <td><b>Car</b><br/><img src="readme-images/car_005.jpg" width="100"/></td>
+  <td><b>Bloques</b><br/><img src="readme-images/blocks_037.jpg" width="100"/></td>
+  <td><b>Auto</b><br/><img src="readme-images/car_005.jpg" width="100"/></td>
 </tr>
 <tr>
-  <td><b>Horse</b><br/><img src="readme-images/horse_038.jpg" width="100"/></td>
-  <td><b>Wheelbarrow</b><br/><img src="readme-images/wheelbarrow_029.jpg" width="100"/></td>
+  <td><b>Caballo</b><br/><img src="readme-images/horse_038.jpg" width="100"/></td>
+  <td><b>Carretilla</b><br/><img src="readme-images/wheelbarrow_029.jpg" width="100"/></td>
 </tr>
 </table>
 
-The file `_negative.zip` contains images with no objects, to be used as a negative class in training the model.
+El archivo `_negative.zip` contiene imágenes sin objetos, para ser usado como clase negativa en el entrenamiento del modelo.
 
-#### About the sample test images
+#### Sobre las imágenes de prueba
 
-The sample test images are four images that were not part of the training data:
+Las imágenes de prueba son cuatro fotos que no formaron parte del entrenamiento:
 
 <table>
 <tr>
@@ -93,165 +93,153 @@ The sample test images are four images that were not part of the training data:
 </tr>
 </table>
 
-#### Tips and comments
-- <p>With the IBM Watson Visual Recognition service, you can use images as small as 224 x 224 pixels with no loss of performance.  So, preprocessing training images to be 224 x 224  can make life easier (faster upload times, for example, than when using larger images.)</p>
-- <p>The guidelines recommend including at least 50 training images in each class.  However, if you don't have 50 images for one or more classes, try to train the model with what you have, because it might work well enough for you.  (The sample training data here has 20 images for each class.)</p>
-- <p>Including a negative class in training isn't always needed.  Experiment to determine what works best for your case.  (This sample includes a negative class.)</p>
+#### Sugerencias y comentarios
+- <p>Con el servicio de IBM Watson Visual Recognition, podés usar imágenes tan chicas como 224 x 224 pixels sin experimentar una pérdida de performance. Por eso, pre-procesar imágenes de 224 x 224 puede hacerte la vida más fácil (por ejemplo, mejorando los tiempos de subida de los datos, frente a imágenes más grandes.)</p>
+- <p>Las guías recomiendan usar al menos 50 imágenes de entrenamiento para cada clase. Sin embargo, si no tenés 50 imágenes, podés igualmente intentar entrenar el modelo con las fotos que tengas, y es probable que funcione correctamente. (Para nuestro ejemplo, hay 20 fotos de entrenamiento para cada clase)</p>
+- <p>Incluir una clase negativa no es siempre requerido. Experimentá para determinar qué es lo que funciona mejor en tu caso particular. (Nuestro ejemplo incluye una clase negativa.)</p>
 
-See: [IBM Watson Visual Recognition guidelines for good training](https://console.bluemix.net/docs/services/visual-recognition/customizing.html#customizing-guidelines-training)
-
-<p>&nbsp;</p>
-
-
-### Step 2: Create a visual recognition model in your Watson Studio project
-
-1. <p>Click <b>Add to project</b> and then click <b>VISUAL RECOGNITION MODEL</b>.  Follow prompts to associate an instance of the IBM Visual Recognition service with your project.  This opens the visual recognition model builder.</p>
-2. <p>Replace the name "Default Custom Model" with a name you choose.</p>
-3. <p>In the data panel, drag and drop (or browse for) the two .zip files you downloaded in Step 1.</p>
-4. <p>In the data panel, select all of the the .zip files and then click <b>Add to model</b>.</p>
-5. <p>Rename each of the classes to remove <code>.zip</code> from the end of the name.</p>
-7. <p>Click <b>Train model</b>.</p>
-
-See also: <a href="https://dataplatform.cloud.ibm.com/docs/content/analyze-data/visual-recognition-train.html">Training a visual recognition model</a>
+Ver: [IBM Watson Visual Recognition guidelines for good training](https://console.bluemix.net/docs/services/visual-recognition/customizing.html#customizing-guidelines-training)
 
 <p>&nbsp;</p>
 
 
-### Step 3: Test the model in Watson Studio
+### Paso 2: Crear un modelo de reconocimiento visual dentro de tu proyecto en Watson Studio
 
-1. <p>When training is complete, a link to the model details page is given in a message.  Click the link to go to the model details page.  (Alternatively, click on the model name in the <b>Assets</b> page of your project to get to the model details page.)</p>
-2. <p>Click the <b>Test</b> tab.</p>
-3. <p>Download these test images to your local computer: <a href="sar-model/test_images">Test images</a></p>
-4. <p>Drag test images onto the test area for classification.</p>
+1. <p>Hacé click en <b>Add to project</b> y luego click en <b>VISUAL RECOGNITION MODEL</b>.  Seguí los pasos para asociar una instancia del servicio IBM Visual Recognition a tu proyecto.  Esto abre el entrenador de reconocimiento visual.</p>
+2. <p>Reemplazá el nombre "Default Custom Model" con el nombre que elijas.</p>
+3. <p>En el panel de datos, arrastrá (o navegá hacia) los archivos .zip que descargaste en el paso 1.</p>
+4. <p>En el panel de datos, seleccioná todos los archivos .zip y luego hacé click en <b>Add to model</b>.</p>
+5. <p>Renombrá cada clase para remover el <code>.zip</code> del final del nombre.</p>
+7. <p>Hacé click en <b>Train model</b>.</p>
+
+También mirá: <a href="https://dataplatform.cloud.ibm.com/docs/content/analyze-data/visual-recognition-train.html">Entrenando un modelo de reconocimiento visual</a>
 
 <p>&nbsp;</p>
 
 
-### Step 4: Work with your trained model in a notebook in Watson Studio
+### Paso 3: Probá el modelo en Watson Studio
 
-**Note:**  Both sample notebooks work in the FREE Python 3.5 environment in Watson Studio.
+1. <p>Cuando el entrenamiento esté completo, te va a aparecer un link a los detalles del modelo.  Hacé click en el link para ir a los detalles.  (Alternativamente, podés hacer click en el nombre del modelo dentro de la página de <b>Assets</b> de tu proyecto.)</p>
+2. <p>Hacé click en la lengueta<b>Test</b>.</p>
+3. <p>Descargá a tu computadora estas imágenes de prueba: <a href="sar-model/test_images">Imágenes de prueba</a></p>
+4. <p>Arrastrá las imágenes de prueba hacia el área de clasificación.</p>
+
+<p>&nbsp;</p>
+
+
+### Paso 4: Trabajá con tu modelo entrenado desde un notebook en Watson Studio
+
+**Nota:**  Ambos notebooks funcionan en el ambiente FREE Python 3.5 de Watson Studio.
 
 #### 4.1
 
 <ol>
-<li><p>Add the first sample notebook, <code>sar-test-notebook</code>, to your project:</p>
+<li><p>Agregá el primer notebook de ejemplo, <code>sar-test-notebook</code>, a tu proyecto:</p>
     <ol>
-    <li>Click <b>Add to project</b> and then click <b>NOTEBOOK</b></li>
-    <li>Click the tab labeled <b>From URL</b></li>
-    <li>In the box labeled <b>Notebook URL</b>, paste the URL of this sample notebook: <a href="sar-notebooks/sar-test-notebook.ipynb"><code>sar-test-notebook</code></a></li>
-    <li>Give the notebook a name</li>
-    <li>Click <b>Create Notebook</b></li>
+    <li>Hacé click en <b>Add to project</b> y después click en <b>NOTEBOOK</b></li>
+    <li>Hacé click en la lengueta <b>From URL</b></li>
+    <li>En el rectángulo llamado <b>Notebook URL</b>, pegá la URL de este notebook de ejemplo: <a href="sar-notebooks/sar-test-notebook.ipynb"><code>sar-test-notebook</code></a></li>
+    <li>Dale un nombre al notebook</li>
+    <li>Hacé click en Click <b>Create Notebook</b></li>
     </ol></li>
-<li><p>Paste your model ID and credentials into the notebook:</p>
+<li><p>Pegá en el notebook el ID y las credenciales de tu modelo:</p>
     <ol>
-    <li>From the <b>Services</b> sub-menu of the main, navigation menu, open <b>Watson Services</b> in a new browser tab</li>
-      <li>Beside your instance of the IBM Watson Visual Recognition service, click <b>Launch tool</b></li>
-      <li>In the <b>Overview</b> tab, scroll down to find the model you created in Step 2, and then copy the model ID</li>
-      <li>Paste the model ID in the notebook where needed</li>
-      <li>Back in the <b>Credentials</b> tab of the Visual Recognition tool, create some test credentials, and then copy the <code>apikey</code> value</li>
-      <li>Paste the apikey in the notebook where needed</li>
+    <li>Desde el sub-menú <b>Services</b> dentro de la página principal, abrí <b>Watson Services</b> en una nueva lengueta</li>
+      <li>Al lado de tu instancia de IBM Watson Visual Recognition service, hacé click en <b>Launch tool</b></li>
+      <li>En la lengueta <b>Overview</b>, bajá hasta encontrar el modelo que creaste en el paso 2, y luego copiá el ID del modelo</li>
+      <li>Pegá el ID del modelo en el notebook en el espacio indicado</li>
+      <li>Volviendo a la lengueta de <b>Credentials</b> dentro de la herramienta de Visual Recognition, creá unas credenciales de prueba y luego copiá la <code>apikey</code></li>
+      <li>Pegá la apikey en el notebook en el espacio indicado</li>
     </ol></li>
-<li><p>Read, explore, and run the cells of the sample notebook.  Learn how to use the Watson Visual Recognition Python client to classify test images.</p></li>
+<li><p>Leé, explorá y ejecutá las celdas del notebook de ejemplo.  Aprendé cómo usar el cliente Python de Watson Visual Recognition para clasificar imágenes de prueba.</p></li>
 </ol>
 
 #### 4.2
 
-Repeat the steps in 4.1 with the second sample notebook, <a href="sar-notebooks/sar-app-code-notebook.ipynb"><code>sar-app-code-notebook</code></a>.
+Repetí el paso 4.1 con el segundo notebook de ejemplo, <a href="sar-notebooks/sar-app-code-notebook.ipynb"><code>sar-app-code-notebook</code></a>.
 
-In this notebook, you can see some how to define some functions that will be needed in the sample Python web app.
+En este notebook, vas a ver cómo definir algunas funciones que vas a precisar dentro de la Python web app de ejemplo.
 
-See also:
-- [Notebooks in Watson Studio](https://dataplatform.cloud.ibm.com/docs/content/analyze-data/notebooks-parent.html)
+También mirá:
+- [Notebooks en Watson Studio](https://dataplatform.cloud.ibm.com/docs/content/analyze-data/notebooks-parent.html)
 - [IBM Watson Visual Recognition API](https://cloud.ibm.com/apidocs/visual-recognition?code=python)
-
-**Demo video**
-
-<a href="https://youtu.be/BsydyQ6eUL8"><img src="readme-images/thumbnail-sar-notebook-video.png" width="75%"/></a>
 
 <p>&nbsp;</p>
 
 
-### Step 5: Copy prototype code into a web app
+### Paso 5: Copiá el prototipo dentro de una app web
 
-1. <p>Download and unzip the sample app from here: <a href="sar-web-app/sar-web-app.zip">Sample Python Flask web app</a></p>
-2. <p>In the file <code>server.py</code>, paste your model ID and credentials (just like in the sample notebooks)</p>
-3. <p>Notice that the functions <code>getKey</code>, <code>getTopClass</code>, and <code>classifyObject</code> that were prototyped in the notebook are used in the file <code>server.py</code></p><img src="readme-images/sar-app-code.png" width="75%"/></a>
+1. <p>Descargá y descomprimí la app de ejemplo desde este link: <a href="sar-web-app/sar-web-app.zip">Sample Python Flask web app</a></p>
+2. <p>En el archivo <code>server.py</code>, pegá tu ID de modelo y las credenciales (como hiciste en el notebook de ejemplo)</p>
+3. <p>Notá que las funciones <code>getKey</code>, <code>getTopClass</code>, y <code>classifyObject</code> que fueron prototipadas en el notebook, son usadas en el archivo <code>server.py</code></p><img src="readme-images/sar-app-code.png" width="75%"/></a>
 
-#### Sample file highlights
+#### Archivos dentro de la app
 <table>
 <tr>
-  <th>File</th>
-  <th>Description</th>
+  <th>Archivo</th>
+  <th>Descripción</th>
 </tr>
 <tr>
   <td><code>server.py</code></td>
-  <td>Python Flask server code for the app</td>
+  <td>Código Python Flask para ejecutar del lado del server en nuestra app</td>
 </tr>
 <tr>
   <td><code>static/index.html</code></td>
-  <td>HTML and Javascript (AJAX) for the web page interface of the app</td>
+  <td>HTML y Javascript (AJAX) para la interfaz web de la app</td>
 </tr>
 <tr>
   <td><code>static/css/styles.css</code></td>
-  <td>Controls the appearance of the web page</td>
+  <td>Controla la apariencia de la página web</td>
 </tr>
 </table>
 
 <p>&nbsp;</p>
 
 
-### Step 6: Run the app on your local computer
+### Paso 6: Corré la app en tu computadora local
 
-1. Open a command prompt and then navigate to the directory containing the file <code>server.py</code>
-2. Install the dependencies:
+1. Abrí una línea de comandos y navegá a la carpeta que contiene el archivo <code>server.py</code>
+2. Instalá las dependencias:
     ```
     pip install -r requirements.txt
     ```
-    Mac users, run this command instead:
+    Usuarios Mac, correr este comando en lugar del anterior:
     ```
     pip install --user -r requirements.txt
     ```
-3. From the command line, start the Python Flask server by issuing the following command: <pre><code>python server.py</code></pre>
-4. Open a web browser to: [http://localhost:8000/](http://localhost:8000)
-5. Classify one of the test images
-
-**Demo video**
-
-<a href="https://youtu.be/PFsSxTBcius"><img src="readme-images/thumbnail-sar-local-video.png" width="75%"/></a>
+3. Desde la línea de comandos, iniciá el Python Flask server con este comando: <pre><code>python server.py</code></pre>
+4. Abrí este link en un navegador web: [http://localhost:8000/](http://localhost:8000)
+5. Clasificá alguna de las imágenes de prueba
 
 <p>&nbsp;</p>
 
 
-### Step 7: Push the app to the public cloud
+### Paso 7: Desplegá la app en la nube pública de IBM
 
 <ol>
-  <li><p>In IBM Cloud, create a Python Flask Cloud Foundry app, size 128 MB: <a href="https://console.bluemix.net/catalog/starters/python">Python Flask starter app</a></p></li>
-  <li><p>In the local file named <code>manifest.yml</code>, replace <code>app-name</code> with the name you chose for your Python Flask app starter:
+  <li><p>En IBM Cloud, creá una Python Flask Cloud Foundry app, con tamaño de 128 MB: <a href="https://console.bluemix.net/catalog/starters/python">Python Flask starter app</a></p></li>
+  <li><p>En el archivo local <code>manifest.yml</code>, reemplazá <code>app-name</code> por el nombre que le diste a la app cuando creaste el Python Flask app starter:
 <pre><code>applications:
 - name: app-name
   memory: 128M
 </code></pre></p></li>
-<li><p>In the local file named <code>setup.py</code>, replace <code>app-name</code> with the name you chose for your Python Flask app starter:
+<li><p>En el archivo local <code>setup.py</code>, reemplazá <code>app-name</code> por el mismo nombre de app del paso anterior:
 <pre><code>setup(
     name='app-name',
     version='1.0.0',
 ...
 </code></pre></p></li>
-  <li><p>On the command line, login to your IBM Cloud account by issuing the following command:
+  <li><p>En la línea de comandos, hacé login en tu cuenta IBM Cloud account con este comando:
 <pre><code>ibmcloud login
 </code></pre></p></li>
-  <li><p>On the command line, target the CloudFoundry API endpoint by issuing the following command:
+  <li><p>En la línea de comandos, apuntá al CloudFoundry API endpoint con este comando:
 <pre><code>ibmcloud target --cf
 </code></pre></p></li>
-  <li><p>On the command line, from the app working directory (where the file server.py is located)
-push your app to IBM Cloud by issuing the following command:
+  <li><p>En la línea de comandos, desde la carpeta donde está la app (donde está el archivo server.py)
+enviá tu app a IBM Cloud con este comando:
 <pre><code>ibmcloud app push
 </code></pre></p></li>
 </ol>
-
-**Demo video**
-
-<a href="https://youtu.be/rbYM2xmq8sA"><img src="readme-images/thumbnail-sar-push-video.png" width="75%"/></a>
 
 <p>&nbsp;</p>
 
