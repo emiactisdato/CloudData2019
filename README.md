@@ -30,6 +30,8 @@ Estas instrucciones describen cómo construir la web app de ejemplo con las imá
 <p>&nbsp;</p>
 
 
+## Stage 1:
+
 ### Pre-requisitos
 
 <ol>
@@ -103,6 +105,8 @@ Ver: [IBM Watson Visual Recognition guidelines for good training](https://consol
 <p>&nbsp;</p>
 
 
+## Stage 2:
+
 ### Paso 2: Crear un modelo de reconocimiento visual dentro de tu proyecto en Watson Studio
 
 1. <p>Hacé click en <b>Add to project</b> y luego click en <b>VISUAL RECOGNITION MODEL</b>.  Seguí los pasos para asociar una instancia del servicio IBM Visual Recognition a tu proyecto.  Esto abre el entrenador de reconocimiento visual.</p>
@@ -166,6 +170,8 @@ También mirá:
 
 <p>&nbsp;</p>
 
+
+## Stage 3:
 
 ### Paso 5: Copiá el prototipo dentro de una app web
 
